@@ -1,9 +1,11 @@
 ---
 name: prompt-engineer
 description: >-
-  Generate or optimize prompts. Use when the user asks to
+  Generate, optimize, review, or audit prompts. Use when the user asks to
   "write a prompt", "create a system prompt", "optimize this prompt",
-  "improve this prompt", or discusses prompt engineering strategy.
+  "improve this prompt", "review this prompt", "audit this prompt",
+  "diagnose this prompt", "审查/评审/诊断/优化/改进/改写 提示词 / prompt /
+  system prompt", or discusses prompt engineering strategy.
 version: 1.0.0
 ---
 
@@ -27,6 +29,7 @@ When this skill activates, produce a prompt (generation mode) or a revised promp
 **Reference files** (load when indicated in the workflow):
 - `references/anti-patterns.md` — error taxonomy for diagnosis in optimization mode
 - `references/cognitive-mechanisms.md` — three cognitive mechanisms that explain *why* translation strategies work (forward propagation advantage, attention position effect, induction head generalization). Load when diagnosing why an existing prompt underperforms, facing an edge case not covered by the anti-pattern table, or the user asks *why* a particular strategy is recommended
+- `references/empirical-verification.md` — test-based verification workflow (design, baseline, diagnose, iterate). Load when the prompt will be deployed in a setting where output quality is directly observable and translation errors carry material cost
 
 ---
 
@@ -67,15 +70,9 @@ Diagnose translation errors in the existing prompt using `references/anti-patter
 
 ## Encoding Framework
 
-Encode the understood user needs into a structure the model processes efficiently. Four flexible layers, combined as needed — use only the layers the task requires, because every unused layer dilutes attention from the layers that matter.
+Encode the understood user needs into a structure the model processes efficiently. Before applying the framework, calibrate to the receiver's capabilities (context window size, tool-calling support, reasoning depth), because the target language's grammar varies with the receiver — smaller context windows demand aggressive compression with head/tail priority; tool-calling models benefit from actionable steps encoded as tool invocations rather than prose instructions.
 
-**Encoding principles**:
-- **Context** at the head — because head position carries the highest cumulative attention weight
-- **Intent** immediately after — because an explicit goal prevents the model from inferring a divergent one
-- **Behavior** in positive form with "because..." motivations — because positive framing aligns with forward generation (~3% vs. ~12% violation rate) and motivations activate deeper generalization
-- **Verification** at the tail — because tail position carries the strongest position encoding signal
-
-Adapt encoding to the receiver's capabilities (context window size, tool-calling support, reasoning depth), because the target language's grammar varies with the receiver. For smaller context windows, compress aggressively and prioritize head/tail placement; for tool-calling models, encode actionable steps as tool invocations rather than prose instructions.
+Four flexible layers, arranged along the attention curve — static context at the head, explicit intent next, behavior with motivations in the middle, verification at the tail. Use only the layers the task requires, because every unused layer dilutes attention from the layers that matter. Each layer is detailed below.
 
 ### Layer Structure
 
@@ -91,6 +88,7 @@ Adapt encoding to the receiver's capabilities (context window size, tool-calling
 
 **Behavioral Specification** — Format requirements, style parameters, positive behavioral directives.
 - Express all constraints in positive form first. Because positive instructions align with the model's forward generation path and achieve ~3% violation rate versus ~12% for negative constraints.
+- Embed each rule's motivation inline using "because..." links, because embedded motivations activate the induction heads that let the model extrapolate the principle to scenarios the rules did not explicitly cover — without motivations, the model treats each rule as an isolated constraint.
 - When safety constraints require negative form, isolate them in dedicated sections with clear delimiters, and repeat at both the beginning and end of the prompt (bookend strategy), because U-shaped attention decay would otherwise mute constraints buried in the middle.
 - Define expertise scope and output constraints directly, because parameterized capability boundaries focus attention on task logic rather than persona maintenance.
 
@@ -110,20 +108,6 @@ The ordering follows attention mechanics:
 [Verification & Iteration] ← Tail position: position encoding advantage
 ```
 
-### Thought-Motivation-Behavior Chain Construction
-
-For each rule in the generated prompt, construct the complete derivation:
-
-```
-Core idea (the prompt's first principle)
-  ↓ Because...
-Behavioral motivation (why this rule is necessary)
-  ↓ Therefore...
-Behavioral rule (the specific requirement)
-```
-
-Embed the motivation directly in the prompt using "because..." links. This activates deeper generalization — the model can then extrapolate the principle to scenarios the rules did not explicitly cover, rather than treating each rule as an isolated constraint.
-
 ---
 
 ## Quality Verification
@@ -132,7 +116,7 @@ Before presenting the output, verify it against these three principles. Each tar
 
 ### Fidelity — every element traces bidirectionally between user goal and prompt rule
 
-Fidelity failures mean the translation changed the message — adding what was not there, or losing what was. Verify: every rule traces back through motivation → core idea → user goal (untraceable rules are unauthorized additions); every piece of content traces to a user request (unrequested content dilutes attention); all critical user requirements are represented (omitted requirements are silent translation losses).
+Fidelity failures mean the translation changed the message — adding what was not there, or losing what was. Apply the Traceability Test (§Understanding the Source) to every rule, and additionally verify: every piece of content traces to a user request (unrequested content dilutes attention); all critical user requirements are represented (omitted requirements are silent translation losses).
 
 ### Efficiency — every encoding choice aligns with the cognitive mechanism it leverages
 
@@ -140,32 +124,10 @@ Efficiency failures mean the translation is faithful but lossy — the right mes
 
 ### Structural Integrity — physical structure reinforces logical structure
 
-Structural failures mean the encoding is internally inconsistent — the parts do not compose into a coherent whole. Verify: physical ordering follows the attention-optimized sequence (Context → Intent → Behavior → Verification); different content types are physically isolated with structural tags; the thought-motivation-behavior chain is complete and unbroken for each rule, because broken chains produce rules the model follows literally but cannot generalize.
+Structural failures mean the encoding is internally inconsistent — the parts do not compose into a coherent whole. Verify: physical ordering follows the attention-optimized sequence (Context → Intent → Behavior → Verification); different content types are physically isolated with structural tags; the backward induction chain (goal → core idea → motivation → rule) is complete and unbroken for each rule, because broken chains produce rules the model follows literally but cannot generalize.
 
 Verify the output passes all three checks before presenting it.
 
 ---
 
-## Empirical Verification
-
-Quality Verification checks the encoding's internal consistency. Empirical verification confirms the translation produces the intended behavior in practice — because a structurally sound prompt can still encode the wrong meaning. Apply when the prompt's success criteria are observable in model output and the cost of translation error is high.
-
-### Test Design
-
-Create 2–5 representative test inputs that exercise the prompt's behavioral rules. Prioritize three categories: core path inputs that test the primary intent, edge cases where rules might conflict or underspecify, and adversarial inputs that pressure the prompt's constraints. Derive expected outputs from the backward induction chain's success criteria, because test expectations disconnected from the user's actual goal will validate the wrong behavior.
-
-### Baseline Comparison
-
-Run both the new prompt and a baseline (the previous version, or no prompt) against the same inputs, because isolated results cannot distinguish prompt effect from model default behavior. When the baseline already produces satisfactory output, the prompt adds no value — this signals either an unnecessary translation or success criteria that need sharpening.
-
-### Failure Diagnosis
-
-When a test reveals unexpected output, diagnose using the anti-pattern taxonomy (`references/anti-patterns.md`) before making changes, because the symptom (wrong output) and the root cause (encoding error) are often in different locations. Trace from the output failure back through the encoding to identify which translation strategy was misapplied. If a specific root cause recurs across multiple tests, the issue is likely in the core idea or motivation rather than in individual rules.
-
-### Iteration
-
-Each diagnosis suggests a targeted correction. Apply the correction, re-verify structurally (Quality Verification), then re-test empirically. Generalize from test failures to principles rather than adding narrow rules that fix only the observed case — because overfitting to test cases produces a prompt that works for the examples but fails in deployment. Converge when outputs consistently meet success criteria across all test inputs, and remove any prompt content that tests reveal to be inert.
-
----
-
-Physical encoding order: Context (head) → Intent → Behavior → Verification (tail).
+Before output: verify Fidelity (every rule traces to user goal via Traceability Test), Efficiency (no anti-patterns per `references/anti-patterns.md`), Structural Integrity (attention-optimized ordering Context → Intent → Behavior → Verification). For high-stakes deployments, follow up with empirical verification per `references/empirical-verification.md`.
