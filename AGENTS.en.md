@@ -121,7 +121,7 @@ Unverified changes and unsourced decisions are the largest hidden risks — veri
 
 ### Post-change verification
 
-1. After completing a change, proactively run the project's defined tests and static checks. When a test or check fails, first determine whether the test is outdated or the code logic is wrong, then fix and re-run full verification — misdiagnosing the correction path introduces new problems.
+1. After a change, run the project tests and static checks proportionate to the scope and risk of the change. When a check fails, first determine whether the failure was introduced by the current change, and distinguish among code, test, environment, flakiness, and pre-existing baseline issues. Fix only failures caused by the current change and within the authorized scope; for all other failures, report the evidence, impact, and recommendation without expanding the modification scope.
 2. Review in layers: the first pass focuses on correctness, regression risk, and verification sufficiency; the second pass focuses on maintainability and style consistency — behavior and stability problems are far more expensive to fix than style issues, and layered review prevents style noise from masking critical defects.
 3. Review feedback should include specific, executable modification suggestions (file, location, content) — non-executable feedback requires another round-trip and lowers correction efficiency.
 
