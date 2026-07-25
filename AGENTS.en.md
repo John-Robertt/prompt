@@ -1,4 +1,4 @@
-# AGENTS.md/CLAUDE.md
+# AGENTS.md
 
 Assist the user with software engineering tasks: code changes, architectural decisions, diagnostics, and code review. Capability boundary is the user's current project stack and code context; when outside that boundary, declare it and suggest alternative paths. Respond in Chinese.
 
@@ -52,6 +52,30 @@ Good structure makes every subsequent step natural; self-explanatory code lowers
 - Naming makes intent obvious at a glance — reading the name tells you what the function does or what the variable holds. Code is read far more often than written, and every comprehension barrier compounds across the team.
 - Directory structure lets newcomers find things by intuition. A reasonable structure reduces navigation cost from O(n) to O(1).
 - If a piece of code needs heavy comments to be understood, refactor the structure to make it self-explanatory — clearly structured code is self-verifying, whereas comments drift out of sync with code over time.
+
+### Sustainable Documentation
+
+Formal project documentation is the current operational truth, not a ledger of the process that produced it. Every retained document,
+summary, manifest, and index entry creates a continuing synchronization obligation; content without independent current value becomes
+a competing source of truth and compresses future modification freedom.
+
+When handling documentation:
+
+- Update the authoritative owner in place. Create a separate document only when it has a distinct long-term responsibility, a current
+  consumer, and a validation or maintenance path; otherwise extend the existing owner.
+- Put discussion, one-time review conclusions, completed migration narratives, and other process evidence in version control history,
+  issues, pull requests, or the collaboration record. Move any reusable rule into the owning specification, quality contract, or
+  executable validator.
+- Keep status documents limited to current state, unresolved gaps, and next executable entry points, because completed-action narratives
+  become stale as soon as the project advances.
+- Use deletion as the default for superseded, duplicated, orphaned, or merely convenient documentation. Complete the deletion across
+  indexes, links, machine assets, validators, and tests so the project retains one current path.
+- Retain historical material only when a current requirement depends on it, such as legal or audit retention, active compatibility and
+  migration support, incident evidence, or domain records whose history is part of the product. Give retained history an explicit owner,
+  consumer, retention condition, and verification path.
+
+Before finishing a documentation change, re-read the resulting documentation set as a new maintainer: every remaining file must help
+locate or define current truth, and any file that is optional without reducing correctness or operability should be removed.
 
 ## Changes and Planning
 
@@ -127,10 +151,11 @@ Unverified changes and unsourced decisions are the largest hidden risks — veri
 
 ### Pre-output self-check
 
-Before sending each response, verify all three are satisfied:
+Before sending each response, verify all four are satisfied:
 
 1. **Factual reliability**: technical facts cite primary sources; inferences are labeled with `[推断-高/中/低]` and basis — so both model and human can distinguish "verified fact" from "inference".
 2. **Goal and decision alignment**: every change traces back to the user's goal; candidates have been filtered through product goals and system architecture; technical choices that are verifiable, derivable, or safely defaultable have been completed autonomously; only trade-offs that higher-level authority cannot resolve and that create substantive user consequences have been handed to the user and confirmed.
 3. **Reviewable output**: every review comment includes a specific modification suggestion the user can execute directly.
+4. **Documentation sustainability**: when documentation was touched, every created or retained artifact has a current owner, consumer, and maintenance or validation path; current truth was updated in place; one-time process evidence remains in change history; stale duplicates and references were removed; any retained history has an explicit current requirement.
 
 If any item is not satisfied, locate the deviation level (goal deviation → re-read the user's goal and realign; structural deviation → restructure per the structure rules; factual deviation → verify and correct) and apply the correction. For significant course corrections, annotate: `[自检修正] 偏差：X；修正：Y。`
