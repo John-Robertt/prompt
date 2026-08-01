@@ -1,65 +1,51 @@
-# Cognitive Mechanisms: Why Translation Strategies Work
+# Model-Processing Heuristics
 
-Three mechanisms from the model's architecture determine how it processes prompt instructions. Each mechanism provides the causal basis for specific translation strategies. When facing novel situations, reason from these mechanisms rather than memorizing rules.
-
----
-
-## Mechanism 1: Forward Propagation Advantage
-
-### How It Works
-
-Large language models generate text through autoregressive prediction — each token is predicted based on all preceding tokens, following a forward probability path. Positive instructions ("use dependency injection for state management") align with this natural forward path: the token sequence contains only the desired pattern, and the model generates along high-probability trajectories without internal conflict.
-
-Negative instructions ("do not use global variables") create a **Latent Semantic Activation Trap**: the token sequence unavoidably contains the forbidden concept ("global variables"), which activates the associated code patterns, syntax trees, and weight networks in the model's latent space. To comply, the model must compute an additional **penalty term** at every decoding step to suppress these activated-but-forbidden candidates. This suppression is computationally expensive and fragile — it frequently fails in long contexts or deeply nested logic.
-
-### Evidence
-
-- Empirical measurement: positive instruction violation rate ~3% vs. negative constraint violation rate ~12%.
-- All three major platforms (Anthropic, OpenAI, Google) independently converge on the same recommendation: "tell the model what to do, not what not to do."
-- The **Warning-based Prompts** technique — injecting meta-instructions like "pay special attention to any negation words" — achieves a 25.14% absolute accuracy improvement by forcibly reshaping attention distribution, confirming that the root cause is attention-level, not logic-level.
-
-### Translation Implication
-
-**Translate needs as "do X" rather than "don't do Y."** Negative framing is a grammatical structure in the target language that the model systematically misparses. When a safety constraint genuinely requires negative form, physically isolate it in a dedicated section with clear delimiters, and repeat at both prompt head and tail (bookend strategy) to counteract attention decay.
+These heuristics explain why some translation strategies often help, but they are not universal architectural laws. Their effect varies by receiver, task, context, and decoding setup. Use them to form testable encoding hypotheses; target-receiver evidence overrides them.
 
 ---
 
-## Mechanism 2: Attention Position Effect (U-Shaped Decay)
+## Heuristic 1: Desired-Path Salience
 
-### How It Works
+### Working Hypothesis
 
-In the self-attention computation over long sequences, tokens at the **head** of the sequence accumulate the longest path through all subsequent layers (highest cumulative attention weight), while tokens at the **tail** benefit from the most recent position encoding (strongest recency signal). Tokens in the **middle** fall into an attention trough — a phenomenon called "Lost in the Middle."
+Autoregressive models generate continuations from preceding tokens. An instruction that names the desired behavior supplies a direct continuation pattern; a prohibition alone identifies an excluded state without necessarily supplying the preferred alternative. This makes positive targets a useful default when they preserve the user's meaning.
 
-This creates a U-shaped attention curve: information placed at the beginning and end of a prompt receives the strongest processing weight, while information buried in the middle is systematically underweighted.
+### Limits
 
-### Evidence
-
-- Anthropic: "Place long documents and inputs at the top of the prompt... queries at the end can improve response quality by up to 30%, especially for complex multi-document inputs."
-- OpenAI: Recommends "reference text" strategy — place external data in context for model access.
-- Google: "Provide all context first", then "place specific instructions or questions at the very end", using anchor phrases like "Based on the above information..." after large data blocks.
-- The effect is amplified in 1M-token context windows — the "middle" region is vastly larger, deepening attention dilution.
+This heuristic does not imply that models universally misparse negation or that a positive rewrite is semantically equivalent. Safety, authorization, scope, and contractual prohibitions retain their literal meaning and must remain explicit.
 
 ### Translation Implication
 
-**Information position = its "volume" in the target language.** Place static reference content at the head (highest cumulative weight), and place the core query, instructions, and verification criteria at the tail (position encoding advantage). Critical constraints that cannot be placed at head or tail should be repeated at both positions (bookend strategy). Never bury the most important information in the middle of a long prompt.
+**Lead with "do X" without deleting a meaningful "do not Y."** Positive framing gives generation a desired forward path, but translation fidelity takes priority: when a prohibition defines safety, authorization, scope, or a contract boundary, preserve it explicitly and pair it with the desired alternative where useful. Isolate or bookend the prohibition only when its risk and attention sensitivity justify the extra tokens.
 
 ---
 
-## Mechanism 3: Induction Heads and Principle-Based Generalization
+## Heuristic 2: Position Sensitivity in Long Contexts
 
-### How It Works
+### Working Hypothesis
 
-Within multi-layer, multi-head self-attention architectures, **induction heads** enable the model to extract abstract patterns by composing information across attention layers. A **Common Bridge Representation** hypothesis posits that a shared latent subspace connects early and late network layers, enabling a phase transition from "weak learning" (predicting marginal token probabilities) to "pattern learning" (extracting abstract logic).
+Models can use information unevenly across long inputs. Reference material placed before a task-specific query lets the final instruction operate over the supplied evidence, while instructions near the generation boundary may receive stronger practical influence.
 
-When a prompt contains explicit core ideas and motivations (e.g., "The core value of this system is protecting modification freedom — every design decision should prioritize whether it compresses future modification space"), it provides a high-dimensional **semantic activation vector**. This vector helps the model rapidly align the relevant induction heads in its latent space. The model can then project known principles onto entirely novel scenarios composed of different tokens — achieving genuine out-of-distribution generalization.
+### Limits
 
-By contrast, surface-level rules ("don't use global variables", "must write unit tests") activate only shallow feature matching. The model follows the literal rules but cannot extrapolate to unlisted situations.
-
-### Evidence
-
-- DeepSeek-R1-Zero experiment: trained with pure reinforcement learning, given only two feedback signals (result accuracy + format requirement). The model autonomously developed complex chain-of-thought, reflection, self-correction, and super-generalization to out-of-distribution tasks — demonstrating that goals + format alone can bootstrap full reasoning capabilities.
-- In symbolic language reasoning tests, replacing real-world concepts with meaningless symbols still yields precise logical reasoning, as long as the prompt captures the "core motivation" behind symbol mappings — confirming that induction heads operate on structural relationships, not surface tokens.
+The shape and magnitude of position effects vary by receiver, task, formatting, and context length. Do not infer a universal U-shaped curve or duplicate every important sentence. Use controlled tests when placement affects a material behavior.
 
 ### Translation Implication
 
-**Translating "why" is more efficient than translating "what."** Principles are extremely high-compression information encoding — a single principle enables the model to derive countless rules autonomously. When constructing the thought-motivation-behavior chain, invest most effort in articulating the core idea and motivation clearly. The model will derive the specific behavioral rules from these. This is not laziness — it is a higher-bandwidth encoding that activates deeper generalization circuits.
+**Information position = its "volume" in the target language.** In reference-dependent prompts, place source material before the task-specific query and keep final instructions near the generation boundary. Bookend a constraint only when omitting it would be material and prompt length or target-receiver evidence makes attention loss plausible; otherwise repetition spends attention without adding fidelity.
+
+---
+
+## Heuristic 3: Principle-Based Generalization
+
+### Working Hypothesis
+
+Goals, motivations, and action principles provide compressed relationships that a model can project onto cases not explicitly listed. Surface rules provide stronger local convergence but usually generalize less beyond their stated form.
+
+### Limits
+
+Principles do not guarantee that receivers infer the same trigger, event boundary, order, or literal contract. Concrete rules remain necessary wherever observed variance would materially change success.
+
+### Translation Implication
+
+**Translate both "why" and the material parts of "what."** Motivations and action principles provide high-compression generalization; concrete rules provide convergence where behavioral variance would materially change success. Use minimum sufficient rigidity: fix the invariant when alternative forms are equivalent, and fix the form or procedure only when that exactness is consumed by a user or system, creates verifiability, or protects a safety, authorization, irreversible, or demonstrated reliability boundary. This preserves generalization without outsourcing critical protocol design to the receiver.
