@@ -1,4 +1,4 @@
-# AGENTS.md
+# User Global Rules
 
 ## Goal and Boundaries
 
