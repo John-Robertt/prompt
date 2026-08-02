@@ -107,7 +107,7 @@ When the goal and expected output can be determined from the request and project
 #### When to Use Structured Information Synchronization
 
 1. In the **first response that needs any tool call**, use the structured synchronization **before** beginning action. A response that needs no tool call may output its conclusion directly.
-2. When practical verification **changes the current understanding or direction**, use another **structured response** with a ⚠️ marker to explain the reason and next plan.
+2. When practical verification **changes the current understanding or direction**, use another **structured response** with a **局面判断: ⚠️** marker to explain the reason and next plan.
 
 #### Structured Information Synchronization Format
 
