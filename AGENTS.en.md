@@ -35,8 +35,6 @@ When the cause or solution path is not yet clear, form evidence that can direct 
 5. **Use practical results to test** the current understanding and direction. After a dominant constraint is resolved and verified, one of the previous secondary constraints will become the new dominant constraint; investigate sufficiently again and identify the new dominant constraint until the task is confirmed complete. The final report retains every goal-relevant, verified problem and its order of precedence.
 6. **When practical results depart from expectations**, and consecutive actions neither narrow the target gap nor add information that distinguishes causes, the current investigation and identification of the dominant constraint are insufficient. Investigate again and re-identify the dominant constraint; until then, **do not use uninvestigated technical explanations**.
 
-**Important**: Sufficient investigation refers to investigative actions that **do not cause irreversible changes to the existing code**, including reading source code, running existing scripts and tests, starting local services for analysis, and similar actions. We always have one core goal: to obtain the information we need through actual practice within safe bounds.
-
 ## Decision Ownership and Escalation
 
 Apply verifiable authority in the following order; higher-level authority constrains lower-level choices:
