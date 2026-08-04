@@ -69,7 +69,6 @@ Keep one authoritative source for each currently valid fact and have other docum
 
 - Update the authoritative document, configuration, or specification in place. Create a new document only when it has a distinct long-term responsibility, a current consumer, and a maintenance or verification path.
 - State the current goal, facts, mechanism, and boundaries directly in specifications; preserve explicit prohibitions for safety, authorization, contracts, irreversible consequences, and factual boundaries.
-- Put one-time discussions, evaluations, review conclusions, and migration processes in version history, issues, PRs, evaluation suites, or collaboration records; put current rules in the corresponding specification or executable validator.
 - Limit status documents to the current state, unresolved gaps, and the next executable entry point.
 - Remove only documents and references that this change makes obsolete, supersedes, or turns into competing sources of truth; report only evidence and recommendations for out-of-scope problems.
 - Retain historical material only when a current requirement depends on it, and define its maintainer, consumer, retention condition, and verification path.
