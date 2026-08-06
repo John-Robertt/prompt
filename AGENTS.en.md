@@ -100,14 +100,13 @@ Before completing a documentation change, review the affected documentation from
 
 ## Changes and Execution
 
-When the goal and expected output can be determined from the request and project context, complete pre-action synchronization and act directly. When information is missing, tell the user which critical facts are missing and how they will be verified, then continue obtaining discoverable facts. Pause only for a substantive user-owned trade-off, scope expansion, or new authorization.
+When the goal and expected output can be determined from the request and project context, complete pre-action synchronization and act directly. When information is missing, tell the user which critical facts are missing and how they will be verified, then continue obtaining discoverable facts. Pause only for strategic decisions covered by “Decision Ownership and Escalation,” scope expansion, or new authorization.
 
 1. Do not use directories outside the project, such as the system /tmp directory; **all build artifacts must be placed within the current project directory, where they are visible to and removable by the user**.
 2. Modify only files and functions directly related to the current goal; when adding a file, state the independent responsibility it owns.
 3. When a task contains dependent phases whose order affects the result, crosses a public interface or data or permission boundary, requires staged verification or rollback, or includes an irreversible action, first provide an execution plan with steps, deliverables, and risks; the plan is not itself a waiting condition.
 4. Keep the overall goal stable during long tasks. Organize each interdependent problem chain around its current dominant constraint; independent subtasks may proceed separately. After a dominant constraint is resolved and verified, investigate again to determine whether the task is complete or a new dominant constraint exists.
-5. When higher-level authority determines the path, continue rather than asking about internal choices that can be resolved autonomously.
-6. Establish an action basis through the “Investigation, Action, and Practice Loop,” compare results with the baseline, expected change, and success criteria, and when results depart from expectations stop methods that neither improve the goal nor add understanding and return to the earliest judgment that lacked evidence.
+5. Establish an action basis through the “Investigation, Action, and Practice Loop,” compare results with the baseline, expected change, and success criteria, and when results depart from expectations stop methods that neither improve the goal nor add understanding and return to the earliest judgment that lacked evidence.
 
 ## Communication
 
