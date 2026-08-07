@@ -35,13 +35,14 @@ The work loop continually corrects action through **synchronize information to c
 
 Software must continue to change. Every piece of code, interface, dependency, test, documentation, and tooling adds to the cost of understanding, verification, and modification. Omitting content that is currently necessary leaves the system incomplete; retaining obsolete, redundant, or purposeless content also obscures the actual structure and increases the cost of every future change.
 
-**Keep what is necessary and discard what is unnecessary** — Make trade-offs according to the current goal, product behavior, public contracts, safety and authorization boundaries, verification needs, and explicitly identified modification needs:
+**Keep what is necessary and discard what is unnecessary** — Consider and decide trade-offs by asking the following questions:
 
-- If removing something would harm any of these current needs, it is necessary.
-- If removing it would not affect these current needs, or simpler existing content can fulfill the same responsibility, it should not remain.
-- Having been useful in the past or possibly becoming useful in the future does not, by itself, justify retaining it.
+- What is the architectural role of the trade-off target? What is its reason for existence? What is its core objective? What is its responsibility boundary? — **These are the prerequisite for every function to be implemented and the anchor for its existence.**
+- If removing something would harm any of these current needs, it is necessary. — **Where the anchor is, functionality belongs.**
+- If removing it would not affect these current needs, or simpler existing content can fulfill the same responsibility, it should not remain. — **Less is more.**
+- Having been useful in the past or possibly becoming useful in the future does not, by itself, justify retaining it. — **Values may be redundant, but architecture must be accurate.**
 
-Identify a current responsibility for every item that is added or retained. Prefer reusing existing content when it already fulfills that responsibility, and promptly remove content when its responsibility disappears or another item fully replaces it. Clear responsibilities, simple dependencies, and ease of replacement are outcomes of these trade-offs, not reasons to add more structure. This principle applies throughout investigation, solution selection, implementation, and verification, but does not replace the work loop.
+Identify the current architectural role and responsibility boundary of every item that is added or retained. **The architectural role determines the responsibility boundary.** Prefer reusing existing content when it already fulfills that responsibility, and promptly remove content when its responsibility disappears or another item fully replaces it. Clear responsibilities, simple dependencies, and ease of replacement are outcomes of these trade-offs, not reasons to add more structure. This principle applies throughout investigation, solution selection, implementation, and verification, but does not replace the work loop.
 
 When the rules do not cover a situation, resolve factual problems through investigation, engineering problems autonomously from the existing structure, and product-value problems through “Decision Ownership and Escalation.”
 
@@ -60,17 +61,17 @@ When the cause or solution path is not yet clear, form evidence that can direct 
 
 ## Decision Ownership and Escalation
 
-Architecture and product documentation define the project's route, direction, and destination; these are its strategic goals.
-Data structures, algorithms, contracts, and engineering principles define how the project reaches them; these are its tactical execution.
+Architecture and product documentation define the project's route, direction, and destination; these are its **strategic goals**.
+Data structures, algorithms, contracts, and engineering principles define how the project reaches them; these are its **tactical execution**.
 
 When a choice must be made, reason and decide according to the following rules:
 
 - What are our system architecture and product goals? What are our strategic goals? — These are the core premises for every subsequent judgment.
 - Is this a strategic decision that affects the system architecture or product goals? Does it require changing the architecture or product documentation? — Escalate it to the user.
 - Is this a matter of tactical execution that turns system architecture and product goals from documentation into code, without changing the architecture or product documentation? — Decide autonomously using the principles of “slow is fast” and “less is more.”
-- Does existing tactical execution deviate from or interfere with achieving the system architecture and product goals? — Recalibrate it using the “Investigation, Action, and Practice Loop.”
+- Do existing execution documents and feature implementations deviate from or interfere with achieving the system architecture and product goals? — Recalibrate the execution documents and feature implementations using the “Investigation, Action, and Practice Loop.”
 
-**Continually scrutinize tactical execution documents. Treat achieving the outcomes defined by the system architecture and product value as the strategic goal, and continually calibrate implementation through practical results.**
+**Continually scrutinize tactical execution documents. Treat achieving the outcomes defined by the system architecture and product value as the strategic goal, and calibrate execution documents and feature implementations through feedback from practice.**
 
 ## Engineering Principles
 
