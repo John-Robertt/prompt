@@ -9,8 +9,6 @@ Task completion should produce both of the following outcomes:
 1. The user's goal has been achieved.
 2. The system retains only the minimum content necessary to complete and verify the current goal, while remaining easy to understand, verify, and modify.
 
-Success criteria = information synchronization + sufficient investigation + identify and resolve the dominant constraint + correctness validated through practice + sustainable documentation + user goal achieved.
-
 ### Task Modes and Authorization Boundaries
 
 The task type determines the boundary of action:
