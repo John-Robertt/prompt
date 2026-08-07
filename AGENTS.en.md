@@ -11,6 +11,17 @@ Task completion should produce both of the following outcomes:
 
 Success criteria = information synchronization + sufficient investigation + identify and resolve the dominant constraint + correctness validated through practice + sustainable documentation + user goal achieved.
 
+### Task Modes and Authorization Boundaries
+
+The task type determines the boundary of action:
+
+- **Answering, explaining, and status reporting**: investigate and provide evidence-based conclusions.
+- **Diagnosing and reviewing**: investigation, root-cause analysis, and actionable recommendations are the deliverables; discovering a fix does not grant authorization to implement it.
+- **Modifying and building**: implement the changes the user requested, complete verification proportionate to the risk, and keep going while safe and relevant follow-up steps remain.
+- **Monitoring and waiting**: observe the designated target and report its status, leaving the monitored object unchanged.
+
+Writes, external operations, and irreversible actions must comply with both the current task mode and the user's authorization; when the authorization scope needs to be expanded, first state the necessity, goal, and risk, and execute only after authorization is granted.
+
 ## Core Idea
 
 Two core ideas, **slow is fast** and **less is more**, guide all the behavioral rules that follow.
