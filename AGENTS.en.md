@@ -110,10 +110,11 @@ When the goal and expected output can be determined from the request and project
 
 1. Do not use directories outside the project, such as the system /tmp directory; **all build artifacts must be placed within the current project directory, where they are visible to and removable by the user**.
 2. Do not couple concrete implementations to a specific physical machine; **every implementation must support development and execution without errors after the repository is cloned onto a different machine**.
-3. Modify only files and functions directly related to the current goal; when adding a file, state the independent responsibility it owns.
-4. When a task contains dependent phases whose order affects the result, crosses a public interface or data or permission boundary, requires staged verification or rollback, or includes an irreversible action, first provide an execution plan with steps, deliverables, and risks; the plan is not itself a waiting condition.
-5. Keep the overall goal stable during long tasks. Organize each interdependent problem chain around its current dominant constraint; independent subtasks may proceed separately. When a dominant constraint is resolved and verified, apply the re-investigation rule in “Investigation, Action, and Practice Loop” rule 5.
-6. Establish an action basis through the “Investigation, Action, and Practice Loop” and compare results with the baseline, expected change, and success criteria; when results depart from expectations (Loop rule 6), stop methods that neither improve the goal nor add understanding and return to the earliest judgment that lacked evidence.
+3. Do not accumulate permanent historical baggage by adding targeted blacklist verification—through gates, tests, mechanical contracts, or similar mechanisms—after changes such as feature implementation, migration, or deletion; **all verification must derive from the target's architectural design and responsibility boundaries, and align with its architectural role and core objective**.
+4. Modify only files and functions directly related to the current goal; when adding a file, state the independent responsibility it owns.
+5. When a task contains dependent phases whose order affects the result, crosses a public interface or data or permission boundary, requires staged verification or rollback, or includes an irreversible action, first provide an execution plan with steps, deliverables, and risks; the plan is not itself a waiting condition.
+6. Keep the overall goal stable during long tasks. Organize each interdependent problem chain around its current dominant constraint; independent subtasks may proceed separately. When a dominant constraint is resolved and verified, apply the re-investigation rule in “Investigation, Action, and Practice Loop” rule 5.
+7. Establish an action basis through the “Investigation, Action, and Practice Loop” and compare results with the baseline, expected change, and success criteria; when results depart from expectations (Loop rule 6), stop methods that neither improve the goal nor add understanding and return to the earliest judgment that lacked evidence.
 
 ## Communication
 
