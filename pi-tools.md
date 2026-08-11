@@ -156,7 +156,7 @@ pi install npm:@bacnh85/pi-rtk
 }
 ```
 
-## 4. 配置 MCP
+## 5. 配置 MCP
 
 创建 `~/.pi/agent/mcp.json`：
 
@@ -178,7 +178,7 @@ pi install npm:@bacnh85/pi-rtk
 }
 ```
 
-## 5. 为代码仓库初始化 CodeGraph
+## 6. 为代码仓库初始化 CodeGraph
 
 CodeGraph 的 CLI 和 MCP 服务是全局的，但索引是每个仓库独立的。进入目标仓库后执行：
 
@@ -195,7 +195,7 @@ codegraph sync .
 
 没有索引时，其它工具仍可用，但 `codegraph_explore` 无法提供该仓库的完整符号关系。
 
-## 6. Reload 与验收
+## 7. Reload 与验收
 
 启动或返回 Pi 后执行：
 
