@@ -6,19 +6,19 @@ This guide provides recommendations for tool selection, call ordering, result re
 
 Identify the current information gap and make the smallest sufficient tool call that directly fills it. Stop searching once the result is sufficient; do not repeat the same work with another tool. The table gives efficiency recommendations; interface constraints appear in the relevant sections.
 
-| Current need | Preferred tool |
-|---|---|
+| Current need                                                              | Preferred tool                                       |
+| ------------------------------------------------------------------------- | ---------------------------------------------------- |
 | Understand an unknown implementation, call relationships, or impact scope | `codegraph_explore` (when the repository is indexed) |
-| Locate by file name, directory, or path | `fffind` |
-| Locate by identifier, text, error message, or configuration item | `ffgrep` |
-| Locate by syntax structure or call pattern | `ast-grep` |
-| Inspect a known file or obtain edit anchors | `read` |
-| Make a localized edit to an existing file | `replace` |
-| Undo an incorrect replacement | `undo_last_replace` |
-| Create or completely rewrite a file | `write` |
-| Run a command | `bash` (RTK compresses output automatically) |
-| Query current third-party technical documentation | Context7 |
-| Isolate a broad investigation or parallel independent work | subagent |
+| Locate by file name, directory, or path                                   | `fffind`                                             |
+| Locate by identifier, text, error message, or configuration item          | `ffgrep`                                             |
+| Locate by syntax structure or call pattern                                | `ast-grep`                                           |
+| Inspect a known file or obtain edit anchors                               | `read`                                               |
+| Make a localized edit to an existing file                                 | `replace`                                            |
+| Undo an incorrect replacement                                             | `undo_last_replace`                                  |
+| Create or completely rewrite a file                                       | `write`                                              |
+| Run a command                                                             | `bash` (RTK compresses output automatically)         |
+| Query current third-party technical documentation                         | Context7                                             |
+| Isolate a broad investigation or parallel independent work                | subagent                                             |
 
 Common call paths:
 
@@ -33,12 +33,10 @@ Create or completely rewrite → write → inspect the actual file content or ch
 
 ## 2. Understand and Locate
 
-When the repository contains `.codegraph/` and the current need involves code locations, implementation mechanisms, call relationships, impact scope, or symbols you are about to modify, prefer `codegraph_explore`.
+When the current need involves code locations, implementation mechanisms, call relationships, impact scope, or symbols you are about to modify, prefer `codegraph_explore`.
 
 - Queries should include the functional question, key symbols, or file names rather than broad keywords.
-- Treat returned source code as already read; do not immediately call `read` on it again.
-- Once CodeGraph has covered the target source, call `read` again only to obtain hash anchors for editing or inspect an exact section it did not cover.
-- If `.codegraph/` is absent, use `read` or a locator directly according to the current information gap.
+- If `.codegraph/` is absent, follow the location guidance below based on the current information gap.
 
 Location guidance:
 
