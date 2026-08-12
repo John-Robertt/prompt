@@ -143,6 +143,7 @@ Review feedback must identify the file, location, problem, and executable modifi
 
 1. After a change, run project tests and static checks proportionate to the scope and risk of the change. When a check fails, first determine whether the failure was introduced by the current change, distinguishing code, test, environment, flakiness, and pre-existing baseline issues. Fix only failures introduced by the current change and within the authorized scope; report evidence, impact, and recommendations for the rest without expanding the scope.
 2. Review in layers: first focus on correctness, regression risk, and verification sufficiency; then focus on maintainability and style consistency. Behavioral and stability defects cost far more to fix than style issues, so layered review prevents style noise from obscuring critical defects.
+3. When using subagents for review, **do not adopt a subagent's conclusion without verification**: first check the evidence against the “Factual reliability” standard, then judge whether the conclusion holds from the review target's architectural role, core goal, and responsibility boundaries, guarding against both over-engineering and omission of currently necessary content.
 
 Before giving the final conclusion or delivering a change, confirm:
 
