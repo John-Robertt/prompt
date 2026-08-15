@@ -78,7 +78,7 @@ jq --version
 pi install npm:pi-mcp-adapter
 pi install npm:pi-hashline-edit-pro
 pi install npm:@ff-labs/pi-fff
-pi install npm:@tintinweb/pi-subagents@
+pi install npm:@tintinweb/pi-subagents
 pi install npm:pi-web-access
 pi install npm:@bacnh85/pi-rtk
 ```
