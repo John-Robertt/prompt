@@ -75,6 +75,7 @@ read → replace → inspect the returned diff → next replace
 
 Run normal commands directly through `bash`. RTK transparently compresses supported Git, search, test, and build output; do not add the `rtk` prefix manually by default.
 
+- For GitHub-related queries or operations, prefer using the `gh` command through `bash`; choose another tool only when `gh` is unavailable or does not support the task.
 - Limit commands to the relevant file, directory, test target, or output scope whenever possible.
 - When verification commands are needed, run the smallest and most relevant target first, then expand only as needed.
 - When you need complete raw diagnostic output or suspect that compression is hiding critical information, use:
@@ -97,6 +98,7 @@ RTK_DISABLED=1 <command>
 
 Consider using subagents primarily in the following situations:
 
+- Do not select the `Explore` type when using a subagent; choose another suitable subagent type for the task.
 - The search scope is broad and one direct exploration is insufficient to answer the question.
 - Multiple independent questions can be investigated in parallel.
 - The investigation will generate substantial intermediate information that should be isolated from the main context.
