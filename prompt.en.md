@@ -1,10 +1,10 @@
 # Efficient Tool Selection and Use Guidelines
 
-This guide provides recommendations for tool selection, call ordering, result reuse, and context control.
+This guide provides recommendations for tool selection, call ordering, and context control.
 
 ## 1. Select Tools
 
-Identify the current information gap and make the smallest sufficient tool call that directly fills it. Stop searching once the result is sufficient; do not repeat the same work with another tool. The table gives efficiency recommendations; interface constraints appear in the relevant sections.
+Identify the current information gap and make the smallest sufficient tool call that directly fills it. Stop searching once the result is sufficient. The table gives efficiency recommendations; interface constraints appear in the relevant sections.
 
 | Current need                                                              | Preferred tool                                       |
 | ------------------------------------------------------------------------- | ---------------------------------------------------- |
@@ -20,17 +20,6 @@ Identify the current information gap and make the smallest sufficient tool call 
 | Query current third-party technical documentation                         | Context7                                             |
 | Isolate a broad investigation or parallel independent work                | subagent                                             |
 
-Common call paths:
-
-```text
-Unknown implementation       → codegraph_explore → use a locator or read only if needed
-Known path                   → read
-Text or identifier lookup    → ffgrep → read if needed
-Syntax structure lookup      → ast-grep → read if needed
-Localized edit               → read → replace → inspect the returned diff
-Create or completely rewrite → write → inspect the actual file content or change
-```
-
 ## 2. Understand and Locate
 
 When the current need involves code locations, implementation mechanisms, call relationships, impact scope, or symbols you are about to modify, prefer `codegraph_explore`.
@@ -43,9 +32,9 @@ Location guidance:
 - If the target path is known and you only need its contents, use `read` directly.
 - Use `fffind` only for paths, not file contents.
 - Prefer bare identifiers with `ffgrep`, narrow the search scope where possible, and exclude noise.
-- Stop when search results satisfy the current information need; call `read` only when you need the target contents. If ambiguity remains, refine the query using the existing results instead of repeating or broadening searches without evidence.
+- Stop when search results satisfy the current information need; call `read` only when you need the target contents. If ambiguity remains, refine the query using the existing results.
 - When text matching is prone to false positives, use the full `ast-grep` command through `bash`; do not use `sg`.
-- Do not fall back to Bash `find`, `grep`, or `rg` for routine searches unless the tools above cannot express the query.
+- Use Bash `find`, `grep`, or `rg` only when the locating tools above cannot express the query.
 
 ## 3. Read and Modify Files
 
@@ -66,14 +55,12 @@ read → replace → inspect the returned diff → next replace
 
 ### Create or Completely Rewrite Files
 
-- Use `write` for new files.
-- Overwrite an existing file with `write` only when a complete rewrite is genuinely necessary.
-- Do not replace a localized edit to an existing file with a full-file overwrite.
+- Use `write` for new files; use `replace` for localized edits to existing files, and overwrite with `write` only when a complete rewrite is genuinely necessary.
 - After using `write`, inspect the actual file content or final change to confirm that the write produced the expected result.
 
 ## 4. Run Commands and Control Output
 
-Run normal commands directly through `bash`. RTK transparently compresses supported Git, search, test, and build output; do not add the `rtk` prefix manually by default.
+Run normal commands directly through `bash`. RTK transparently compresses supported Git, search, test, and build output.
 
 - For GitHub-related queries or operations, prefer using the `gh` command through `bash`; choose another tool only when `gh` is unavailable or does not support the task.
 - Limit commands to the relevant file, directory, test target, or output scope whenever possible.
@@ -84,8 +71,8 @@ Run normal commands directly through `bash`. RTK transparently compresses suppor
 RTK_DISABLED=1 <command>
 ```
 
-- When processing JSON, prefer `jq` to extract only the required fields rather than reading or printing an entire large file.
-- Avoid using Bash to print large sections of source code; use `read` for source inspection.
+- When processing JSON, prefer `jq` to extract only the required fields.
+- Use `read` to inspect large sections of source code.
 
 ## 5. External Documentation and Online Information
 
@@ -98,10 +85,11 @@ RTK_DISABLED=1 <command>
 
 Consider using subagents primarily in the following situations:
 
-- Do not select the `Explore` type when using a subagent; choose another suitable subagent type for the task.
 - The search scope is broad and one direct exploration is insufficient to answer the question.
 - Multiple independent questions can be investigated in parallel.
 - The investigation will generate substantial intermediate information that should be isolated from the main context.
 - A complex cross-module task requires an independent implementation plan.
 
 Use the current session's tools directly for known files, known symbols, or isolated modifications. After delegating, do not repeat the same search in the main session; if a subagent modifies files, inspect the actual diff and verification results.
+
+Do not select the `Explore` type when using a subagent; choose another suitable type for the task.
