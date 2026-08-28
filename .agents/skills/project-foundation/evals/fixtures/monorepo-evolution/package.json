@@ -1,0 +1,8 @@
+{
+  "name": "monorepo-evolution-fixture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test packages/*/test/*.test.js"
+  }
+}

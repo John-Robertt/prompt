@@ -1,0 +1,8 @@
+{
+  "name": "non-modular-design-fixture",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}

@@ -1,0 +1,167 @@
+{
+  "skill_name": "project-foundation",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "请使用 project-foundation skill 处理这些文件组成的 Node.js 项目。产品设计已经确认，但功能代码还没有开始。在正式实现 Alert Reader、Digest Builder 和 Markdown Exporter 之前，把仓库搭成可直接继续开发的项目基座。沿用现有 Node.js 工具链，完成必要文件修改并运行检查。不要实现告警读取、摘要生成或 Markdown 输出。",
+      "expected_output": "仓库获得唯一系统设计、文档导航、文档/结构/验证/开发计划四项职责和与实际状态一致的当前计划；现有 Node 测试实际运行，产品功能保持不变，没有空功能目录或未来占位。",
+      "files": [
+        "evals/fixtures/node-greenfield/DESIGN.md",
+        "evals/fixtures/node-greenfield/package.json",
+        "evals/fixtures/node-greenfield/src/index.js",
+        "evals/fixtures/node-greenfield/test/smoke.test.js"
+      ],
+      "expectations": [
+        "复用 DESIGN.md 或明确迁移其权威职责，仓库中只有一份系统设计来源",
+        "建立 Documentation、Project Structure、Verification 和 Development Planning 四项职责，并提供统一文档入口",
+        "Documentation、Project Structure、Verification 和 Development Planning 各自拥有独立权威设计文档，已有文档只能一对一复用等价职责",
+        "当前开发计划列出有文件或检查支持的差距、剩余阶段和一个能够直接执行的下一行动",
+        "沿用 package.json 的 Node.js 测试命令并实际运行 npm test",
+        "src/index.js 的现有行为保持不变，没有实现三个产品功能",
+        "没有为尚未实现的产品模块新增源码文件；空目录、空文件和非空桩文件都判定为占位"
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "请使用 project-foundation skill 补全这个已经有部分实现和测试的 Python 库存报告仓库。保留现有 Python 目录、unittest 命令和 docs/architecture.md 的权威职责，只增加当前缺失且有独立用途的结构。完成后运行现有检查，不要实现 CSV 导入、CLI 或新的报告功能。",
+      "expected_output": "现有 Python 项目结构和架构来源得到复用，缺失的文档、项目结构、验证和当前计划边界得到补全；没有引入 Node/TypeScript 结构，已有测试通过，产品行为不变。",
+      "files": [
+        "evals/fixtures/python-existing/PRODUCT.md",
+        "evals/fixtures/python-existing/README.md",
+        "evals/fixtures/python-existing/docs/architecture.md",
+        "evals/fixtures/python-existing/src/inventory/report.py",
+        "evals/fixtures/python-existing/tests/test_report.py"
+      ],
+      "expectations": [
+        "原地补全或继续引用 docs/architecture.md，没有建立第二份重复的系统设计",
+        "沿用 Python、src/inventory、tests 和 unittest，不创建 package.json、index.ts 或 TypeScript 目录",
+        "只建立现有仓库缺失的结构职责，每个新增文件都有当前用途",
+        "Documentation、Project Structure、Verification 和 Development Planning 各自拥有独立权威设计文档，已有文档只能一对一复用等价职责",
+        "当前计划把未实现的 Importer、CLI 和完整报告链路写成差距，并给出下一行动",
+        "实际运行 python -m unittest discover -s tests 且已有行为保持通过",
+        "没有为尚未实现的 Importer 或 CLI 新增源码入口、空函数或占位返回值",
+        "没有实现 CSV 导入、CLI 或新的产品功能"
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "请使用 project-foundation skill 处理这个仓库。DESIGN.md 定义了异步、可查询并能跨进程重启保留状态的任务执行器，但当前 src/jobs.js 只会同步调用函数。按现有代码状态建立开发前项目基座；不要擅自把产品目标改成同步执行，也不要在这次工作中实现队列、Worker 或持久化。完成后运行现有检查。",
+      "expected_output": "异步任务目标继续由设计负责，同步代码被准确记录为实现差距；项目获得必要的结构设计、验证边界和当前计划，现有测试通过，功能代码没有扩展。",
+      "files": [
+        "evals/fixtures/design-conflict/DESIGN.md",
+        "evals/fixtures/design-conflict/package.json",
+        "evals/fixtures/design-conflict/src/jobs.js",
+        "evals/fixtures/design-conflict/test/jobs.test.js"
+      ],
+      "expectations": [
+        "DESIGN.md 中异步提交、状态查询和重启后保留状态的目标保持不变",
+        "当前同步实现被记录为目标与现状之间的差距，没有反向缩小设计",
+        "当前计划给出从结构基座进入异步功能设计或实现的明确下一行动",
+        "Documentation、Project Structure、Verification 和 Development Planning 各自拥有独立权威设计文档，已有文档只能一对一复用等价职责",
+        "没有新增 Queue、Worker、JobHandle、状态存储或对应的空函数、空类和占位入口",
+        "沿用现有 Node.js 工具链并实际运行 npm test",
+        "长期设计不把同步行为写成目标，当前计划不把异步能力写成已经实现"
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "请使用 project-foundation skill 处理这个对账报告仓库。DESIGN.md 的产品结果和外部承诺已经确认，但其中的 Controller、Manager、Utils、共享 store 和循环调用只是早期实现提议。先把设计校准成符合搭积木要求的目标架构，再建立项目基座。不要实现 CSV 读取、校验或报告生成。",
+      "expected_output": "产品方向和公共承诺保持不变；原有技术分层、共享状态和循环依赖被替换为按独立结果划分、只通过稳定输入输出协作且能够独立验证的目标模块；基座与当前计划建立完成，现有代码和测试行为保持不变。",
+      "files": [
+        "evals/fixtures/non-modular-design/DESIGN.md",
+        "evals/fixtures/non-modular-design/package.json",
+        "evals/fixtures/non-modular-design/src/index.js",
+        "evals/fixtures/non-modular-design/test/smoke.test.js"
+      ],
+      "expectations": [
+        "保留本地 CSV 输入、全部校验后才输出、失败不产生部分报告以及明确非目标",
+        "把 Controller、Manager、Utils 和共享 store 视为可以重组的实现方法，不要求用户重新决定已经明确的产品方向",
+        "权威系统设计按独立交付结果划分模块，并写明每个模块的使用者、输入、成功结果和失败结果",
+        "Documentation、Project Structure、Verification 和 Development Planning 各自拥有独立权威设计文档，已有文档只能一对一复用等价职责",
+        "跨模块公共数据有唯一负责人，模块不读取其他模块的内部状态或内部文件",
+        "依赖方向与运行链路一致，不保留 Controller 与 Manager 的循环依赖",
+        "src/index.js 保持不变，没有新增 CSV、校验、报告模块或对应占位源码",
+        "当前计划把现有原型与目标模块架构之间的差距写清楚，并给出能够直接执行的下一行动",
+        "实际运行 npm test 且已有行为保持通过"
+      ]
+    },
+    {
+      "id": 5,
+      "prompt": "请使用 project-foundation skill 处理这个只有 DESIGN.md 的项目。产品方向和 Python 3.12 标准库工具链已经确认，请建立进入功能开发所需的基座，但不要实现学习计划生成、命令行或产品测试。",
+      "expected_output": "项目按设计阶段处理，产品设计被校准成可组合模块，并建立最小文档、结构、验证目标和当前计划；不创建产品源码、空测试或阶段状态文档，也不引入设计之外的工具链。",
+      "files": [
+        "evals/fixtures/design-only/DESIGN.md"
+      ],
+      "expectations": [
+        "保留七天计划、不得超出可用时间、无效输入不产生部分计划以及明确非目标",
+        "目标架构按独立结果划分模块，并说明使用者、输入、成功结果、失败结果和依赖方向",
+        "Documentation、Project Structure、Verification 和 Development Planning 各自拥有独立权威设计文档，已有文档只能一对一复用等价职责",
+        "沿用 Python 3.12 标准库和 unittest，不引入 Node.js、第三方依赖或其他工具链",
+        "没有实现计划生成和 CLI，也没有创建产品源码、空测试或非空占位",
+        "当前计划从设计阶段的具体差距开始，并给出能够直接执行的下一行动",
+        "没有创建 project-stage、foundation-status、maturity 或其他阶段标签文档"
+      ]
+    },
+    {
+      "id": 6,
+      "prompt": "请使用 project-foundation skill 整理这个已经稳定运行的本地运费报价项目。PRODUCT.md 是当前确认的产品方向，测试表达现有公共行为；README 和 docs/architecture.md 包含互相冲突的旧说明。建立统一基座，保持 quoteShipment 行为不变。",
+      "expected_output": "成熟项目的现有代码、工具链和检查得到复用，冲突文档被收敛为一个权威系统设计和正确引用；简单产品没有被机械拆成虚假模块，产品代码与测试保持通过。",
+      "files": [
+        "evals/fixtures/mature-conflict/PRODUCT.md",
+        "evals/fixtures/mature-conflict/README.md",
+        "evals/fixtures/mature-conflict/docs/architecture.md",
+        "evals/fixtures/mature-conflict/package.json",
+        "evals/fixtures/mature-conflict/src/quote.js",
+        "evals/fixtures/mature-conflict/test/quote.test.js"
+      ],
+      "expectations": [
+        "保留 quoteShipment(items, rate)、两位小数、本地费率和无远程存储的当前产品方向",
+        "删除或改正远程 RateClient、QuoteStore、整数金额和向下取整等冲突事实",
+        "产品和系统设计只有一个权威来源，README 只导航或说明当前使用方式",
+        "Documentation、Project Structure、Verification 和 Development Planning 各自拥有独立权威设计文档，已有文档只能一对一复用等价职责",
+        "没有为了搭积木而虚构 PricingService、StorageHelper、QuoteManager 或其他无独立结果的模块",
+        "src/quote.js 和现有测试行为保持不变，实际运行 npm test",
+        "只补全缺失的基座职责，没有为成熟阶段建立状态文档"
+      ]
+    },
+    {
+      "id": 7,
+      "prompt": "请使用 project-foundation skill 为这个 monorepo 建立基座。Ingest 和 Report 独立发布与验证，v2 RecordBatch 目标已经确认，但当前 v1 代码仍传递字符串数组。建立仓库级共同规则以及两个独立交付范围的当前计划，不要实现 v2。",
+      "expected_output": "仓库级设计和结构规则统一管理共同边界，Ingest 与 Report 各自拥有独立模块设计和当前计划；v2 保持目标、v1 保持实现事实，迁移差距按依赖关系排列，当前源码与测试不变。",
+      "files": [
+        "evals/fixtures/monorepo-evolution/DESIGN.md",
+        "evals/fixtures/monorepo-evolution/package.json",
+        "evals/fixtures/monorepo-evolution/packages/ingest/src/index.js",
+        "evals/fixtures/monorepo-evolution/packages/ingest/test/ingest.test.js",
+        "evals/fixtures/monorepo-evolution/packages/report/src/index.js",
+        "evals/fixtures/monorepo-evolution/packages/report/test/report.test.js"
+      ],
+      "expectations": [
+        "系统设计保持 v2 RecordBatch 目标、Ingest 与 Report 的独立结果以及失败不产生部分报告的保证",
+        "当前字符串数组实现只作为 v1 事实，迁移差距进入计划，不反向缩小 v2 设计",
+        "仓库级文档负责共同设计、结构和验证规则，包级文档只负责各自模块",
+        "Documentation、Project Structure、Verification 和 Development Planning 各自拥有独立权威设计文档，已有文档只能一对一复用等价职责",
+        "Ingest 和 Report 各有一份当前计划，并从统一文档入口到达",
+        "迁移阶段先建立 RecordBatch 公共契约和负责人，再按依赖关系推进两个包",
+        "没有修改现有包源码或实现 v2，占位文件也判定失败",
+        "实际运行根 npm test，两个包的现有测试都保持通过",
+        "没有把 monorepo、架构演进或 v1 阶段保存成单独状态文档"
+      ]
+    },
+    {
+      "id": 8,
+      "prompt": "请使用 project-foundation skill 在当前空目录建立项目基座。已确认产品使用 Node.js 24 标准库命令行读取本地 JSON 事件，按日期生成 Markdown 摘要；无效事件返回明确错误且不输出部分摘要。当前版本不联网、不持久化、不认证。不要实现事件读取、摘要生成或命令行。",
+      "expected_output": "空目录获得唯一系统设计、统一文档入口、四个独立结构模块设计、明确的 Node.js 项目结构与验证目标，以及从零开始的当前开发计划；没有产品源码、测试占位或阶段状态文档。",
+      "expectations": [
+        "系统设计保留本地 JSON 输入、按日期生成 Markdown、失败不产生部分结果以及明确非目标",
+        "README、项目代理规则和 docs/README.md 提供统一入口，系统设计只有一个权威来源",
+        "默认布局分别建立 documentation.md、project-structure.md、verification.md 和 development-planning.md，四者职责不合并也不重复",
+        "沿用已确认的 Node.js 24 标准库方向，不引入第三方依赖或其他工具链",
+        "没有实现事件读取、摘要生成或 CLI，也没有创建产品源码、空测试或非空占位",
+        "当前计划准确说明从空目录到功能开发的剩余差距、阶段顺序和下一行动",
+        "Verification 区分当前能够运行的检查与未来产品行为检查，不把未来检查写成已经通过",
+        "没有创建 project-stage、foundation-status、maturity 或其他阶段标签文档"
+      ]
+    }
+  ]
+}
