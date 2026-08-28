@@ -164,20 +164,36 @@ The seven rules below bring "Less Is More" down to concrete engineering decision
 
 7. **Let the code state the current facts.** Express intent through names, directory structure, and division of responsibility; use comments only for reasons, constraints, and trade-offs that the structure cannot show. Once a replacement is done, clean up the implementations, entry points, and references that this change made dead, duplicate, or unused.
 
-### Documentation: Write Only the Current State
+### Documentation: Keep Only Currently Valid Targets, Facts, and Gaps
 
-**Documentation describes, in positive terms, only what things are now and what one needs to know; it carries no baggage for history.**
+**Documentation directly states the currently valid content within its responsibility and does not narrate how that content evolved. "Currently valid" does not mean "already implemented": an approved target design that still guides implementation is also current content.**
 
-Every currently valid fact keeps exactly one authoritative source, and other documents refer to it, so the same fact never appears in several conflicting versions:
+"Positive terms" means stating the target state, implemented fact, or gap directly. It does not present an unimplemented target as an existing fact or shrink an approved target to match the current implementation.
 
-- Update the authoritative document, configuration, or specification in place. Create a new document only when it genuinely has its own long-term responsibility, someone using it now, and a maintainer or a way to verify it.
-- Specifications state the current goal, facts, mechanism, and boundaries directly. Where safety, authorization, public promises, irreversible consequences, or factual boundaries are involved, keep the explicit prohibition.
-- The reader is a maintainer picking this up for the first time (how to write it: "How to Write Text People Read"). Each paragraph states directly who gets what, what they run, what comes out, and — if it fails — what state it stops in and where to pick up.
-- Status documents contain only the current state, the gaps still open, and where the next step starts.
-- Clean up only the documents and references that this change made dead, superseded, or in conflict with what is said elsewhere.
-- Keep historical material only when a current requirement depends on it, and write down who maintains it, who uses it, under what condition it is kept, and how to verify it still holds.
+Before writing, determine which kind of document owns the content:
 
-Before finishing a documentation change, take the position of a maintainer picking it up for the first time and check two things: does every current fact have exactly one authoritative source, and do the related references point at it? Does every paragraph pass the three checks at the end of "How to Write Text People Read"?
+- **Design or specification documents** state the approved target state, mechanism, boundaries, and completion conditions. Retain a target even when it is not yet implemented. Ideas that are unapproved and merely might be useful do not enter the target design.
+- **Implementation or reference documents** state current behavior and usage verified by code, configuration, or an actual run. Refer to the design document for unimplemented targets rather than presenting them as already available.
+- **Status documents** state the target, the current implementation's remaining gap from that target, and where the next step starts. Update them when the gap changes and remove the corresponding status when the gap disappears.
+
+When design and implementation differ, first use "Which Decisions You Make, Which Go to the User" to determine whether the target changed:
+
+- If the target did not change, the design remains the implementation target and the status document records the unfinished gap.
+- If the target changed, update the design responsible for that target, then update the implementation and related references.
+
+Each currently valid target, implemented fact, or status gap keeps exactly one authoritative source, and other documents refer to it:
+
+- Update the document, configuration, or specification responsible for the content in place. Create a new document only when it has an independent long-term responsibility, current readers, and a maintainer or a way to verify it.
+- Keep explicit prohibitions where safety, authorization, public promises, irreversible consequences, or factual boundaries are involved.
+- Write for a maintainer picking up the project for the first time. Each paragraph directly states who gets what, what they run, and what comes out; if it fails, state where it stops and where to continue.
+- Clean up only the documents and references that this change makes invalid, supersedes, or puts in conflict with the authoritative source.
+- Keep historical material only when a current target or implementation still depends on it, and state who maintains it, who uses it, the conditions for keeping it, and how to verify it.
+
+Before finishing a documentation change, take the position of a maintainer picking up the project for the first time and check three things:
+
+1. Can the reader directly distinguish whether each paragraph describes a target, an implemented fact, or a current gap?
+2. Was any unimplemented target mistakenly deleted, narrowed, or presented as implemented?
+3. Does each item have exactly one authoritative source, do related references point to it, and does the writing pass the checks at the end of "How to Write Text People Read"?
 
 ## Rules for Making Changes
 
@@ -231,5 +247,5 @@ Before giving a final conclusion or delivering a change, confirm these seven:
 3. **Are the facts solid?** Check every conclusion against the evidence standard in "Investigate First, Act, Test with Results" item 2.
 4. **Whose call is it?** Check per "Which Decisions You Make, Which Go to the User": nothing you should have decided was pushed to the user, and nothing the user should decide was decided for them.
 5. **Were the trade-offs right?** Check what was added and kept against "Less Is More"; everything this change superseded has been cleaned up, and the cleanup did not damage current behavior, public promises, safety boundaries, or verification capability.
-6. **Can the documentation be maintained?** Check against the two checks at the end of "Documentation: Write Only the Current State".
+6. **Can the documentation be maintained?** Check against the three checks at the end of "Documentation: Keep Only Currently Valid Targets, Facts, and Gaps".
 7. **Expression and language.** Check against the three checks at the end of "How to Write Text People Read".
